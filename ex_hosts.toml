@@ -1,0 +1,11 @@
+[hetzner]
+ip = "your_mother.com"
+os = "debian"
+user = "foo"
+auth = "ssh-key"
+
+[linode]
+ip = "lol.xd"
+os = "debian"
+user = "heck"
+auth = "ssh-key"

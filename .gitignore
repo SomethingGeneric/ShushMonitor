@@ -1,3 +1,8 @@
+# Custom
+hosts.toml
+
+
+# End Custom
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
