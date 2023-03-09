@@ -28,13 +28,13 @@ host = open("/etc/hostname").read()
 if "debian" in issue or "ubuntu" in issue:
     # apt time
     os.system("apt update")
-    res = subprocess.check_output(['apt','list','--upgradable'])
+    res = subprocess.check_output(['apt','list','--upgradable']).decode()
 elif "arch" in issue or "crystal" in issue:
     # pacman time
     if shutil.which("checkupdates") is None:
         res = "You've not installed the package 'pacman-contrib'."
     else:
-        res = subprocess.check_output(["checkupdates","--nocolor"])
+        res = subprocess.check_output(["checkupdates","--nocolor"]).decode()
 
 msg = f"Update check for {host}:\n```\n{res}\n```"
 
