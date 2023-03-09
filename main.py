@@ -23,7 +23,7 @@ if not os.path.exists("/etc/hostname"):
     sys.exit(1)
 
 issue = open("/etc/issue").read().lower()
-host = open("/etc/hostname").read()
+host = open("/etc/hostname").read().strip()
 
 if "debian" in issue or "ubuntu" in issue:
     # apt time
