@@ -36,7 +36,7 @@ elif "arch" in issue or "crystal" in issue:
     else:
         res = subprocess.check_output(["checkupdates","--nocolor"]).decode()
 
-msg = f"Update check for {host}:\n```\n{res}\n```"
+msg = f"Update check for `{host}`:\n```\n{res}\n```"
 
 if len(msg) < 1024:
     webhook = DiscordWebhook(url=webhook_url, content=msg)
@@ -48,10 +48,12 @@ else:
             with open("temp.out", "w") as f:
                 f.write(res)
             url = subprocess.check_output([f"cat temp.out | {exec} termbin.com 9999"])
-            webhook = DiscordWebhook(url=webhook_url, content=f"Output was too long, please view: {url}")
+            webhook = DiscordWebhook(url=webhook_url, content=f"Updates for `{host}` were too long, please view: {url}")
             webhook.execute()
             os.remove("temp.out")
             sent = True
     if not sent:
         print("Uhoh can't paste long output. Failing.")
+        webhook = DiscordWebhook(url=webhook_url, content=f"Output was too long, but I couldn't paste it. Please check out `{host}`")
+        webhook.execute()
         sys.exit(1)
