@@ -1,2 +1,2 @@
 # ShushMonitor
-Simple SSH-based script to check all your machines for updates
+Simple script to notify for updates via discord

@@ -1,29 +1,57 @@
+#!/usr/bin/env python3
+
 # System
-import sys,os
+import sys,os,subprocess,shutil
 
-# Pip
-import toml
+# PyPi
+from discord_webhook import DiscordWebhook
 
-if not os.path.exists("hosts.toml"):
-    print("Please copy 'ex_hosts.toml' to 'hosts.toml' and edit.")
+webhook_url = "DEFAULT_URL_CHANGEME"
+
+if webhook_url == "DEFAULT_URL_CHANGEME":
+    print("Webhook not set. Fail.")
     sys.exit(1)
 
-rdata = open("hosts.toml").read().strip()
+if not os.path.exists("/etc/issue"):
+    # fail code
+    print("No /etc/issue")
+    sys.exit(1)
 
-data = toml.loads(rdata)
+if not os.path.exists("/etc/hostname"):
+    # fail code
+    print("No /etc/hostname")
+    sys.exit(1)
 
-for host in data:
-    name = host
-    info = data[host]
+issue = open("/etc/issue").read().lower()
+host = open("/etc/hostname").read()
 
-    silent = ""
-    command = ""
+if "debian" in issue or "ubuntu" in issue:
+    # apt time
+    os.system("apt update")
+    res = subprocess.check_output(['apt','list','--upgradable'])
+elif "arch" in issue or "crystal" in issue:
+    # pacman time
+    if shutil.which("checkupdates") is None:
+        res = "You've not installed the package 'pacman-contrib'."
+    else:
+        res = subprocess.check_output(["checkupdates","--nocolor"])
 
-    if info['os'] == 'debian':
-        silent = "apt update"
-        command = "apt list --upgradable"
+msg = f"Update check for {host}:\n```\n{res}\n```"
 
-    if command == "":
-        print(f"Don't know how to check OS: {info['os']}")
-
-    print(f"Going to run: \"ssh {info['user']}@{info['ip']} '{silent};{command}'\"")
+if len(msg) < 1024:
+    webhook = DiscordWebhook(url=webhook_url, content=msg)
+    webhook.execute()
+else:
+    sent = False
+    for exec in ["nc", "netcat"]:
+        if shutil.which(exec) is not None:
+            with open("temp.out", "w") as f:
+                f.write(res)
+            url = subprocess.check_output([f"cat temp.out | {exec} termbin.com 9999"])
+            webhook = DiscordWebhook(url=webhook_url, content=f"Output was too long, please view: {url}")
+            webhook.execute()
+            os.remove("temp.out")
+            sent = True
+    if not sent:
+        print("Uhoh can't paste long output. Failing.")
+        sys.exit(1)
