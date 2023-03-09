@@ -47,8 +47,8 @@ else:
         if shutil.which(exec) is not None:
             with open("temp.out", "w") as f:
                 f.write(res)
-            url = subprocess.check_output(["cat","temp.out","|",f"{exec}","termbin.com","9999"])
-            webhook = DiscordWebhook(url=webhook_url, content=f"Updates for `{host}` were too long, please view: {url}")
+            url = subprocess.check_output(["bash","-c",f"'cat temp.out | {exec} termbin.com 9999'"])
+            webhook = DiscordWebhook(url=webhook_url, content=f"Updates for `{host}` too long, please view: {url}")
             webhook.execute()
             os.remove("temp.out")
             sent = True
