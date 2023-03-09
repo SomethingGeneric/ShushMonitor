@@ -6,11 +6,11 @@ import sys,os,subprocess,shutil
 # PyPi
 from discord_webhook import DiscordWebhook
 
-webhook_url = "DEFAULT_URL_CHANGEME"
-
-if webhook_url == "DEFAULT_URL_CHANGEME":
-    print("Webhook not set. Fail.")
+if not os.path.exists("/etc/shushmonitor/webhook"):
+    print("Set webhook in /etc/shushmonitor/webhook")
     sys.exit(1)
+
+webhook_url = open("/etc/shushmonitor/webhook").read().strip()
 
 if not os.path.exists("/etc/issue"):
     # fail code

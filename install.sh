@@ -9,15 +9,15 @@
 
 pip3 install -r requirements.txt
 
-cp main.py new.py
-
 printf "Webhook URL: "
 read URL
 
-sed -i "s/DEFAULT_URL_CHANGEME/$URL/g" new.py
+[[ ! -d /etc/shushmonitor ]] && mkdir -p /etc/shushmonitor
 
-chmod +x new.py
+echo "$URL" > /etc/shushmonitor/webhook
 
-mv new.py /usr/bin/shushmonitor
+chmod +x main.py
+
+mv main.py /usr/bin/shushmonitor
 
 echo "Now add /usr/bin/shushmonitor to your crontab (as root) at whatever interval you choose."
