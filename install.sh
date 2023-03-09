@@ -12,7 +12,7 @@ pip3 install -r requirements.txt
 cp main.py new.py
 
 printf "Webhook URL: "
-read $URL
+read URL
 
 sed -i "s/DEFAULT_URL_CHANGEME/$URL/g" new.py
 
