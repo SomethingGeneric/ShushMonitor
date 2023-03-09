@@ -2,10 +2,10 @@
 
 [[ ! "$EUID" == "0" ]] && echo "Be root or use sudo" && exit 1
 
-[ -x "$(command -v foo)" ] && echo "No pip3" && exit 1
-[ -x "$(command -v foo)" ] && echo "No python" && exit 1
-[ -x "$(command -v foo)" ] && echo "No sed" && exit 1
-[ -x "$(command -v systemctl)" ] && echo "No systemctl. Are you not using SystemD?" && exit 1
+[ ! -x "$(command -v foo)" ] && echo "No pip3" && exit 1
+[ ! -x "$(command -v foo)" ] && echo "No python" && exit 1
+[ ! -x "$(command -v foo)" ] && echo "No sed" && exit 1
+[ ! -x "$(command -v systemctl)" ] && echo "No systemctl. Are you not using SystemD?" && exit 1
 
 pip3 install -r requirements.txt
 
