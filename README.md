@@ -1,2 +1,2 @@
-# ShushMonitor
-Simple script to notify for updates via discord
+# This project has moved:
+[GitLab Repository](https://gitlab.mattcompton.dev/matt/ShushMonitor)
